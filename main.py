@@ -19,7 +19,8 @@ class PLPredictor:
         season_urls = {
             '2022-2023': 'https://www.football-data.co.uk/mmz4281/2223/E0.csv',
             '2023-2024': 'https://www.football-data.co.uk/mmz4281/2324/E0.csv',
-            '2024-2025': 'https://www.football-data.co.uk/mmz4281/2425/E0.csv'
+            '2024-2025': 'https://www.football-data.co.uk/mmz4281/2425/E0.csv',
+            '2025-2026': 'https://www.football-data.co.uk/mmz4281/2526/E0.csv'
         }
         all_matches = []
 
@@ -80,10 +81,10 @@ class PLPredictor:
     def calculate_simple_features(self, data):
         enhanced_data = data.copy().sort_values('season').reset_index(drop=True)
 
-        enhanced_data['home_team_strength'] = 50
-        enhanced_data['away_team_strength'] = 50
-        enhanced_data['home_team_form'] = 5
-        enhanced_data['away_team_form'] = 5
+        enhanced_data['home_team_strength'] = 50.0
+        enhanced_data['away_team_strength'] = 50.0
+        enhanced_data['home_team_form'] = 5.0
+        enhanced_data['away_team_form'] = 5.0
         enhanced_data['home_goals_avg'] = 1.5
         enhanced_data['away_goals_avg'] = 1.5
         enhanced_data['home_goals_conceded_avg'] = 1.5
@@ -251,7 +252,14 @@ class PLPredictor:
         return prediction, probabilities
     
 def main():
-    print("Premier League Prediction Manchester United vs Arsenal")
+    home_team = input("Enter the home team: ").strip()
+    away_team = input("Enter the away team: ").strip()
+
+    if not home_team or not away_team:
+        print("Both team names are required. Stopping here.")
+        return
+
+    print(f"Premier League Prediction {home_team} vs {away_team}")
     print("=" * 50)
     
     predictor = PLPredictor()
@@ -262,8 +270,8 @@ def main():
         print("Couldn't train model. Stopping here.")
         return
     
-    print("\nMATCH PREDICTION FOR AUGUST 17, 2025")
-    prediction, probabilities = predictor.predict_match("Manchester United", "Arsenal")
+    print(f"\nMATCH PREDICTION: {home_team} vs {away_team}")
+    prediction, probabilities = predictor.predict_match(home_team, away_team)
     return predictor
 
 if __name__ == "__main__":
